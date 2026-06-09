@@ -1,0 +1,36 @@
+name: Commit specification to repository
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  commit-spec:
+    if: ${{ github.event.label.name == 'specification-ready' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Determine spec name
+        id: get_spec_name
+        run: |
+          name=$((python scripts/get_spec_file_name.py))
+          echo "spec-name=$name" >> $GITHUB_OUTPUT
+
+      - name: git checkout new branch
+        run: git checkout -b ${{ steps.get_spec_name.outputs.spec-name }}
+
+      - name: Write and commit spec file
+        run: |
+          echo ISSUE_BODY > "specs/${{ steps.get_spec_name.outputs.spec-name }}.md"
+          git commit -am "Add spec file ${{ steps.get_spec_name.outputs.spec-name }}.md"
+          git push origin ${{ steps.get_spec_name.outputs.spec-name }}
+
+    env:
+      ISSUE_TITLE: ${{ github.event.issue.title }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
