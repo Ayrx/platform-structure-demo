@@ -2,7 +2,7 @@ name: Commit specification to repository
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 on:
   issues:
