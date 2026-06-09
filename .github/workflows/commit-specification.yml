@@ -19,7 +19,7 @@ jobs:
       - name: Determine spec name
         id: get_spec_name
         run: |
-          name=$((python scripts/get_spec_file_name.py))
+          name=$(python scripts/get_spec_file_name.py)
           echo "spec-name=$name" >> $GITHUB_OUTPUT
 
       - name: git checkout new branch
