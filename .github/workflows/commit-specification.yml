@@ -22,6 +22,11 @@ jobs:
           name=$(python scripts/get_spec_file_name.py)
           echo "spec-name=$name" >> $GITHUB_OUTPUT
 
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: git checkout new branch
         run: git checkout -b ${{ steps.get_spec_name.outputs.spec-name }}
 
