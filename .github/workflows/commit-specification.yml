@@ -37,6 +37,11 @@ jobs:
           git commit -am "Add spec file ${{ steps.get_spec_name.outputs.spec-name }}.md"
           git push origin ${{ steps.get_spec_name.outputs.spec-name }}
 
+      - name: Create PR
+        run: |
+          gh pr create --title "[SPEC] ${{ steps.get_spec_name.outputs.spec-name }}.md" --body "Closes #${{ env.ISSUE_NUMBER }}"
+
     env:
       ISSUE_TITLE: ${{ github.event.issue.title }}
       ISSUE_BODY: ${{ github.event.issue.body }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
