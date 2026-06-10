@@ -3,6 +3,7 @@ name: Commit specification to repository
 permissions:
   id-token: write
   contents: write
+  pull-requests: write
 
 on:
   issues:
@@ -40,6 +41,8 @@ jobs:
       - name: Create PR
         run: |
           gh pr create --title "[SPEC] ${{ steps.get_spec_name.outputs.spec-name }}.md" --body "Closes #${{ env.ISSUE_NUMBER }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     env:
       ISSUE_TITLE: ${{ github.event.issue.title }}
