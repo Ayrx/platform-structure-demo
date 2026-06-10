@@ -33,7 +33,9 @@ jobs:
 
       - name: Write and commit spec file
         run: |
-          echo ${{ env.ISSUE_BODY }} > "specs/${{ steps.get_spec_name.outputs.spec-name }}.md"
+          cat >> specs/${{ steps.get_spec_name.outputs.spec-name }}.md << EOF
+          ${{ env.ISSUE_BODY }}
+          EOF
           git add -A
           git commit -am "Add spec file ${{ steps.get_spec_name.outputs.spec-name }}.md"
           git push origin ${{ steps.get_spec_name.outputs.spec-name }}
